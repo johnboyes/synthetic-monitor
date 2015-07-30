@@ -1,12 +1,16 @@
 require 'rspec'
 require 'rspec/core'
 require 'rspec/core/formatters/json_formatter'
+require 'rest-client'
 
 $stdout.sync = true #so we can see stdout when starting with foreman, see https://github.com/ddollar/foreman/wiki/Missing-Output
 
 class SyntheticMonitor
 
-  def initialize
+  def initialize (frequency_in_minutes: frequency_in_minutes = 5)
+
+    @frequency_in_minutes = frequency_in_minutes
+
     config = RSpec.configuration
     @formatter = RSpec::Core::Formatters::JsonFormatter.new(config.output_stream)
 
@@ -49,13 +53,24 @@ class SyntheticMonitor
     result[:summary][:failure_count] == 0
   end
 
-  def run spec, slack_webhook_url
-    RSpec::Core::Runner.run(['spec'])
+  def run_specs specs
+    specs.each_pair {|spec, slack_webhook_url| run spec, slack_webhook_url}
+  end
+
+  def run spec, slack_webhook_url 
+  	puts "monitoring spec: #{spec}"
+    RSpec::Core::Runner.run([spec])
     f = @formatter
-    binding.pry
     result = @formatter.output_hash
-    all_tests_passed?(result) ? (puts "\nAll tests passed.\n") : (notify_on_slack result, 'https://hooks.slack.com/services/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') 
+    all_tests_passed?(result) ? (puts "\nAll tests passed.\n") : (notify_on_slack result, slack_webhook_url) 
     RSpec.clear_examples
+  end
+
+  def monitor specs
+    loop do
+     run_specs specs
+     sleep 60*@frequency_in_minutes.to_i
+    end
   end
 
 end
