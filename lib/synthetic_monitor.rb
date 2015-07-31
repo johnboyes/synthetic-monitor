@@ -53,12 +53,12 @@ class SyntheticMonitor
     result[:summary][:failure_count] == 0
   end
 
-  def run_specs specs
-    specs.each_pair {|spec, slack_webhook_url| run spec, slack_webhook_url}
+  def run_spec_slack_pairs spec_slack_pairs
+    spec_slack_pairs.each_pair {|spec, slack_webhook_url| run spec, slack_webhook_url}
   end
 
   def run spec, slack_webhook_url 
-  	puts "monitoring spec: #{spec}"
+  	puts "monitoring specs: #{spec}"
     RSpec::Core::Runner.run([spec])
     f = @formatter
     result = @formatter.output_hash
@@ -66,9 +66,17 @@ class SyntheticMonitor
     RSpec.clear_examples
   end
 
-  def monitor specs
+  def monitor specs="spec", *additional_specs, slack_webhook_url
+  	specs_to_run = additional_specs << specs
+  	loop do
+      run specs_to_run, slack_webhook_url
+      sleep 60*@frequency_in_minutes.to_i
+    end
+  end
+
+  def monitor_on_varying_slack_channels spec_slack_pairs
     loop do
-     run_specs specs
+     run_spec_slack_pairs spec_slack_pairs
      sleep 60*@frequency_in_minutes.to_i
     end
   end
