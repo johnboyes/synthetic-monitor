@@ -3,7 +3,7 @@ Simple website synthetic monitoring.
 
 Example app: [example-synthetic-monitor](https://github.com/johnboyes/example-synthetic-monitor)
 
-The application is **deployable on Heroku** (see below) which makes it **very quick to get production monitoring up and running**, and the monitoring is specified in **plain old [RSpec](http://rspec.info/) tests**, which means that your monitoring is much more **easily customised** to your needs than most solutions.
+The [example application](https://github.com/johnboyes/example-synthetic-monitor) is **deployable on Heroku** (see below) which makes it **very quick to get production monitoring up and running**, and the monitoring is specified in **plain old [RSpec](http://rspec.info/) tests**, which means that your monitoring is much more **easily customised** to your needs than most solutions.
 
 Run all the specs in the 'spec' folder by default, every 5 minutes, and **notify any failures on a [Slack](https://slack.com/) channel or group** (with [SMS notifications coming soon](https://github.com/johnboyes/synthetic-monitor/issues/1)):
 
