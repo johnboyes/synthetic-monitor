@@ -1,7 +1,7 @@
 # synthetic-monitor
 Simple website synthetic monitoring gem.
 
-Example app: [example-synthetic-monitor](https://github.com/johnboyes/example-synthetic-monitor)
+Example app which uses this gem: [example-synthetic-monitor](https://github.com/johnboyes/example-synthetic-monitor)
 
 The **[example application](https://github.com/johnboyes/example-synthetic-monitor) is deployable on Heroku** (see below) which makes it **very quick to get production monitoring up and running**, and the monitoring is specified in **plain old [RSpec](http://rspec.info/) tests**, which means that your monitoring is much more **easily customised** to your needs than most solutions.
 
