@@ -42,6 +42,12 @@ end
 ```
 ([jump to this code snippet](https://github.com/johnboyes/example-synthetic-monitor/blob/3543655f8d5c09295d1ed2ec456f0d731bec086c/spec/example_spec.rb#L13-L17))
 
+## Running the [functional tests](functional_test/README.md)
+
+```ruby
+bundle exec rake test
+```
+
 ## Coming soon
 - [SMS notifications](https://github.com/johnboyes/synthetic-monitor/issues/1)
 - [Attach a screenshot to each notification](https://github.com/johnboyes/synthetic-monitor/issues/2)
