@@ -5,7 +5,7 @@ Example app which uses this gem: [example-synthetic-monitor](https://github.com/
 
 The **[example application](https://github.com/johnboyes/example-synthetic-monitor) is deployable on Heroku** which makes it **very quick to get production monitoring up and running**, and the monitoring is specified in **plain old [RSpec](http://rspec.info/) tests**, which means that your monitoring is much more **easily customised** to your needs than most solutions.
 
-Run all the specs in the 'spec' folder, every 5 minutes, and **notify any failures on a [Slack](https://slack.com/) channel or group** (with [SMS notifications coming soon](https://github.com/johnboyes/synthetic-monitor/issues/1)):
+Run all the specs in the ['spec' directory](spec), every 5 minutes, and **notify any failures on a [Slack](https://slack.com/) channel or group** (with [SMS notifications coming soon](https://github.com/johnboyes/synthetic-monitor/issues/1)):
 
 ```ruby
 SyntheticMonitor.new.monitor ENV['SLACK_WEBHOOK_URL']
