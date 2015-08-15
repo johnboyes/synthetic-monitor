@@ -1,4 +1,5 @@
-# synthetic-monitor
+# synthetic-monitor [![Build Status](https://snap-ci.com/johnboyes/synthetic-monitor/branch/master/build_image)](https://snap-ci.com/johnboyes/synthetic-monitor/branch/master)
+
 Simple website synthetic monitoring gem.
 
 Example app which uses this gem: [example-synthetic-monitor](https://github.com/johnboyes/example-synthetic-monitor)
