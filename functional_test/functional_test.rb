@@ -17,8 +17,6 @@ class FunctionalTest < Minitest::Test
     @mirage = Mirage::Client.new
     @mirage.put('slack', 'Notification received on Slack') { http_method 'POST' }
     @expected_slack_notification_request_body = {"attachments"=> [{"fallback"=>"ALERT: 1 test failed", "color"=>"danger", "title"=>"ALERT: 1 test failed", "fields"=> [{"title"=>"failing test example example of a test which will fail, triggering a notification on Slack", "value"=>"\n\nexpected: 500\n     got: 200\n\n(compared using ==)\n\n# ./spec/failure_spec.rb:13\n==================================================="}]}]}
-    @runscope_bucket_key = "32dq2c18qk24"
-    @success_notifications_url = "https://#{@runscope_bucket_key}.runscope.net"
   end
 
   def assert_notification_sent_to_slack
@@ -35,7 +33,7 @@ class FunctionalTest < Minitest::Test
 
   def test_run_success_spec
     @monitor_thread = Thread.new {
-      monitor = SyntheticMonitor.new(success_notifications_url: @success_notifications_url)
+      monitor = SyntheticMonitor.new(success_notifications_url: success_notifications_post_url)
       monitor.monitor 'spec/success_spec.rb', ENV['SLACK_WEBHOOK']
     }
     assert_no_notification_sent_to_slack

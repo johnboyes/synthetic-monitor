@@ -50,6 +50,10 @@ module RunscopeHelper
     runscope_messages["data"]
   end
 
+  def success_notifications_post_url
+    "https://#{BUCKET_KEY}.runscope.net"
+  end
+
   def delete_message message
     RestClient.delete message_url(message['uuid']), AUTHORIZATION_HEADER
   end
