@@ -31,6 +31,18 @@ class FunctionalTest < Minitest::Test
     retryable { JSON.parse(@mirage.requests(1).body) }
   end
 
+  def test_run_all_specs
+    @monitor_thread = Thread.new { SyntheticMonitor.new.monitor ENV['SLACK_WEBHOOK'] }
+    assert_notification_sent_to_slack
+    assert_no_success_notification_sent
+  end
+
+  def test_run_failure_spec
+    @monitor_thread = Thread.new { SyntheticMonitor.new.monitor 'spec/failure_spec.rb', ENV['SLACK_WEBHOOK'] }
+    assert_notification_sent_to_slack
+    assert_no_success_notification_sent
+  end
+
   def test_run_success_spec
     @monitor_thread = Thread.new {
       monitor = SyntheticMonitor.new(success_notifications_url: success_notifications_post_url)
