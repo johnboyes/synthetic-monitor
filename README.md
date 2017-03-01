@@ -1,4 +1,4 @@
-# synthetic-monitor [![Build Status](https://snap-ci.com/johnboyes/synthetic-monitor/branch/master/build_image)](https://snap-ci.com/johnboyes/synthetic-monitor/branch/master)
+# synthetic-monitor [![CircleCI](https://circleci.com/gh/johnboyes/synthetic-monitor.svg?style=svg&circle-token=8a357c0c61d35641b788801b9b4f3249db07c85e)](https://circleci.com/gh/johnboyes/synthetic-monitor)
 
 Simple website synthetic monitoring gem.
 
@@ -18,7 +18,7 @@ Alternatively you can have individual spec files notify an individual Slack chan
 
 ```ruby
 spec_slack_pairs = {
-  'spec/a_spec.rb' => ENV['A_SlACK_WEBHOOK_URL'], 
+  'spec/a_spec.rb' => ENV['A_SlACK_WEBHOOK_URL'],
   'spec/another_spec.rb' => ENV['A_DIFFERENT_SLACK_WEBHOOK_URL'],
   'spec/a_third_spec.rb' => ENV['A_THIRD_SLACK_WEBHOOK_URL'],
 }
