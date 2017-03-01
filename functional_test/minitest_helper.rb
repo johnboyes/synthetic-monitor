@@ -1,5 +1,3 @@
-require 'rest-client'
-
 def retryable &block
   tries = 0
   begin
@@ -15,51 +13,34 @@ def assert_hashes_equal expected, actual
   assert_equal [], HashDiff.diff(expected, actual)
 end
 
+def assert_notification_sent_to_slack
+  assert_hashes_equal @expected_slack_notification_request_body, request_body_sent_to_slack
+end
 
-module RunscopeHelper
+def assert_no_notification_sent_to_slack
+  assert_nil request_body_sent_to_slack
+end
 
-  BUCKET_KEY = "32dq2c18qk24"
-  AUTHORIZATION_HEADER = {:Authorization => 'Bearer 05d16442-31df-4f23-947d-9a5eec4f0525'}
+def request_body_sent_to_slack
+  request_body_for_request_id 1
+end
 
-  def assert_success_notification_sent
-    assert_equal 1, success_notifications.size
-    success_notification = get_json message_url(success_notifications.first['uuid'])
-    body = JSON.parse success_notification["data"]["request"]["body"]
-    assert_equal("all monitoring tests passed", body["data"])
-  end
+def assert_success_notification_sent
+  assert_equal("all monitoring tests passed", success_request_body_sent["data"])
+end
 
-  def assert_no_success_notification_sent
-    assert_empty success_notifications
-  end
+def success_notifications_post_url
+  "http://localhost:7001/responses/success"
+end
 
-  def get_json url
-    JSON.parse( RestClient.get(url, AUTHORIZATION_HEADER) )
-  end
+def assert_no_success_notification_sent
+  assert_nil success_request_body_sent
+end
 
-  def bucket_url
-    "https://api.runscope.com/buckets/#{BUCKET_KEY}"
-  end
+def success_request_body_sent
+  request_body_for_request_id 2
+end
 
-  def message_url uuid
-    "#{bucket_url}/messages/#{uuid}"
-  end
-
-  def success_notifications
-    runscope_messages = get_json "#{bucket_url}/stream"
-    assert_equal "success", runscope_messages["meta"]["status"]
-    runscope_messages["data"]
-  end
-
-  def success_notifications_post_url
-    "https://#{BUCKET_KEY}.runscope.net"
-  end
-
-  def delete_message message
-    RestClient.delete message_url(message['uuid']), AUTHORIZATION_HEADER
-  end
-
-  def delete_all_success_notifications
-    success_notifications.each { | message | delete_message message }
-  end
-
+def request_body_for_request_id(request_id)
+  retryable { JSON.parse(@mirage.requests(request_id).body) }
 end
