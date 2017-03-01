@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'synthetic_monitor'
-  spec.version     = '0.4.1'
+  spec.version     = '0.4.2'
   spec.date        = '2017-01-03'
   spec.summary     = "Simple synthetic monitoring - runs rspec specs every x minutes and alerts on Slack if any tests fail."
   spec.description = "Simple synthetic monitoring - runs rspec specs given to it every x minutes (defaults to 5 minutes but can be overridden) and alerts on a Slack channel or group of your choosing if any tests fail."
