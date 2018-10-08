@@ -1,0 +1,45 @@
+version: 2.1
+executors:
+  circleci-ruby-executor:
+    machine: true
+jobs:
+  build:
+    working_directory: ~/synthetic-monitor
+    environment:
+      BUNDLE_PATH: vendor/bundle  # path to install gems and use for caching
+    executor: circleci-ruby-executor
+    steps:
+
+    - checkout
+
+    - run:
+        name: Which bundler?
+        command: bundle -v
+
+    - restore_cache:
+        keys:
+        # when lock file changes, use increasingly general patterns to restore cache
+          - v2.5.3-gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          - v2.5.3-gem-cache-{{ arch }}-{{ .Branch }}-
+          - v2.5.3-gem-cache-{{ arch }}-
+
+    - run: bundle check || bundle install && bundle clean
+
+    - save_cache:
+        paths:
+          - vendor/bundle
+        key: v2.5.3-gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+
+    # Test
+    # This would typically be a build job when using workflows, possibly combined with build
+    # This is based on your 1.0 configuration file or project settings
+    - run:
+        name: Run tests
+        command: |
+          bundle exec rake test
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
